@@ -1,0 +1,6 @@
+*/5 * * * * root *char/do_wallet_pull
+
+0 * * * * root *char/do_prize_total
+
+0 * * * * root *stations/reel_check_cron
+

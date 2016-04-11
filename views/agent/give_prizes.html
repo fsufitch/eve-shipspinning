@@ -1,0 +1,70 @@
+{{response.title = "Handing out Ship Spinning prizes"}}
+{{extend "layout.html"}}
+{{include "agent_tools.html"}}
+
+<script type="text/javascript">
+  var prize_ajax_url = "{{=URL('give')}}";
+</script>
+
+<script type="text/javascript"
+	src="{{=URL('static', 'js/give_prizes.js')}}">
+</script>
+
+{{agent_menu()}}
+
+<h1>Giving Out Prizes</h1>
+
+Hello, Agent {{=char.charname}}. To hand out a prize, follow these steps:
+
+<ol type="1">
+  <li> Choose a prize to hand out from the list below, preferably the oldest (top) one.</li>
+  <li> You can group prizes together for more efficient delivery to one person. </li>
+  <li> Go to the market and purchase the item(s). <em>Use the corp wallet.</em> Any unauthorized
+    personal withdrawals of money from the wallet will reflect poorly on you. </li>
+  <li> Look in the "Deliveries" tab of the station to find the prize(s). <em>Do not move prizes from here.
+      They cannot be placed back, and this is the only place they can be contracted as Ship Spinning Inc.</em> </li>
+  <li> Select the relevant prizes, right click, and select Create Contract.</li>
+  <li> Create a private contract to the winner <strong>on behalf of Ship Spinning Inc</strong>.
+    Make sure you spell their name right, and account for numbers in the name.
+    For example, "BL00D" and "BLOOD" are very different things. 
+  <li> Contract duration is <strong>3 days</strong>. </li>
+  <li> Include the Award ID from the table in the description of the contract. Enter multiple numbers
+    if you are grouping prizes together. </li>
+  <li> Send the contract </li>
+  <li> Click the "Done" link next to the prizes you just sent.</li>
+  <li> Rinse and repeat. <em>Tip: keep purchases for deliveries separate. Items in the delivery hangar
+      stack ruthlessly, and they cannot be separated.</em></li>
+</ol>
+
+<hr />
+
+<table>
+  <tr>
+    <th> Award ID </th>
+    <th> Player </th>
+    <th> Station </th>
+    <th> Prize Won </th>
+    <th> Date </th>
+    <th> </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td>
+      {{=row.id}}
+    </td>
+    <td>
+      <a href="javascript: CCPEVE.showInfo(1377, {{=row.char.charid}})">{{=row.char.charname}}</a> </td>
+    <td>
+      <a href="{{=URL('stations','view_reel', args=[row.prize.reel])}}">{{=row.prize.reel.name}}</a>
+    </td>
+    <td>
+      <a href="javascript: CCPEVE.showInfo({{=row.prize.typeid}})">{{=row.prize.name}}</a> </td>
+    <td> {{=row.date}} </td>
+    <td id="done-{{=row.id}}">
+      <a href="javascript: void(0)"
+	 onclick="processDone({{=row.id}})"> Done </a>
+    </td>
+  </tr>
+  {{pass}}
+</table>
+

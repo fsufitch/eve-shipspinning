@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+
+{{ if not auth: }}
+<form method="post">
+  <input type="password" name="password" />
+  <input type="submit" name="submit_form" value="Submit" />
+</form>
+{{ else: }}
+<p>Currently logged in. <a href="?logout">Log out</a></p>
+<p>Stuff to do:</p>
+
+<ul>
+<li> <a href="{{=URL('stations','new_reel')}}">Create a new reel</a> </li>
+<li> <a href="{{=URL('stations','edit_reel')}}">Edit a reel</a> </li>
+<li> <a href="{{=URL('stations','balance_reel')}}">Balance a reel</a> </li>
+<li> <a href="{{=URL('stations','meta_reel')}}">Edit metadata of a reel</a> </li>
+<li> This is {{=("not" if not queryDev() else "")}} a dev instance. <a href="?toggledev">Toggle</a>.
+</ul>
+{{ pass }}

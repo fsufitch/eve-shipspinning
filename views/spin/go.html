@@ -1,0 +1,97 @@
+{{response.title = "Ship Spinning"}}
+{{extend "layout.html"}}
+
+<script type="text/javascript">
+var noauth = {{=str(noauth).lower()}};
+var disabled = {{="true" if reel.disabled else "false"}};
+</script>
+
+<script type="text/javascript" src="{{=URL('static','js/spin.js')}}"></script>
+
+<script type="text/javascript">
+  var prizes = new Array();
+  var prizepos = {};
+  var tmparr, pos;
+  {{for prize in prizes:}}
+    tmparr = [{{=prize.id}}, "{{=prize.name}}"];
+    pos = prizes.push(tmparr) - 1;
+    prizepos[{{=prize.id}}] = pos;
+  {{pass}}
+</script>
+
+<h1> Now Spinning: <a href="{{=URL('stations','view_reel', args=[reel.id])}}">{{=reel.name}}</a> </h1>
+<center><h3>
+    {{if reel.disabled:}}
+    <span class="warning"> This station is disabled! </span>
+    {{pass}}
+    <a href="{{=URL('stations','view_reel', args=[reel.id])}}">Station details</a>
+</h3> </center>
+<div class="spinmenu_cont">
+  <div class="spinmenu">
+    <ul>
+      <li>
+	<a href="{{=URL('buyout','index')}}">
+	  <img src="{{=URL('static','images/isk.png')}}" />
+	  Prize Cash-in
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','wins')}}">
+	  <img src="{{=URL('static','images/delivery.png')}}"/>
+	  Wins and Deliveries
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','spins')}}">
+	  <img src="{{=URL('static','images/stats.png')}}"/>
+	  Spin Log
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','isk_receipts')}}">
+	  <img src="{{=URL('static','images/receipt.png')}}"/>
+	  Donation Receipts
+	</a>
+      </li>
+    </ul>
+  </div>
+  <div style="clear: both"> </div>
+</div>
+
+
+<div class="spinpane">
+  <div class="topstuff">
+    <a id="spinbutton" href="javascript: void(0)" onclick="go()">Spin!</a>
+    <div class="text">
+      <strong> My balance: <span class="balance-display"></span> </strong> <br />
+      <strong> Price per spin: {{=iskfmt(reel.spincost)}} ISK </strong> 
+    </div>
+  </div>
+  <div class="spincells">
+    {{for i in range(3):}}
+    <div class="prizedisplay" id="pd{{=i}}">
+      {{for prize in prizes:}}
+      <!--img style="display:none" src="{{=prize_imgurl(prize.id,128)}}"
+	   id="pr_{{=i}}_{{=prize.id}}"/-->
+      {{prize_genimg(prize.id, 128, forceid="pr_"+str(i)+"_"+str(prize.id), hover=False)}}
+      {{pass}}
+    </div>
+    {{pass}}
+  </div>
+  <div id="spinstatus-display">
+    {{if noauth:}}
+    Please <a href="{{=URL('char','auth')}}">log in</a> to spin.
+    {{else:}}
+    Pull down the lever or push "Spin!" to spin!
+    {{pass}}
+  </div>
+
+  <div id="lever-container" style="background-image: url('{{=URL('static','images/lever-rail.png')}}')">
+    <div id="lever" style="background-image: url('{{=URL('static','images/lever-handle.png')}}')"> </div>
+  </div>
+</div>
+
+<div id="spinstatus-log">
+<p></p>
+</div>
+

@@ -1,0 +1,31 @@
+{{response.title = "My Credit Codes"}}
+{{extend "layout.html"}}
+
+<h1> My Credit Codes </h1>
+
+<form method="post">
+  <p>
+    <strong> Claim a code now! </strong>
+    <input type="text" name="code" />
+    <input type="submit" name="submit_form" value="Go!" />
+  </p>
+</form>
+
+{{if len(codes):}}
+<table>
+  <tr>
+    <th> Code </th>
+    <th> ISK Awarded </th>
+    <th> Date Claimed </th>
+  </tr>
+  {{for code in codes:}}
+  <tr>
+    <td> {{=code.credit_code.code}} </td>
+    <td> {{=iskfmt(code.credit_code.isk)}} </td>
+    <td> {{=code.date}} </td>
+  </tr>
+  {{pass}}
+</table>
+{{else:}}
+<p> You have not claimed any free credit codes yet. Find one and cash it in today! </p>
+{{pass}}

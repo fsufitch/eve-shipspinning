@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+        <title>Ship Spinning Inc. [SLOTS] Winners List</title>
+        <subtitle></subtitle>
+        <link href="http://shipspinning.com/feeds/wins{{='ships=yes' if ships_only else ''}}" rel="self" />
+        <updated>{{=time.isoformat()}}</updated>
+        {{ for row in winlist: }}
+        <entry>
+                <title>{{=row['charname']}} won a {{=row['prizename']}}</title>
+                <updated>{{=row['time'].isoformat()}}</updated>
+                <summary>{{=row['charname']}} won a {{=row['prizename']}} at {{=row['time']}}</summary>
+        </entry>
+        {{ pass }}
+</feed>

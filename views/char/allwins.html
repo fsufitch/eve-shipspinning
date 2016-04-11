@@ -1,0 +1,42 @@
+{{response.title = "Ship Spinning Winners - Page "+str(page)}}
+{{extend "layout.html"}}
+
+<h1> Ship Spinning Winners </h1>
+
+
+{{paginate(page, numpages)}}
+
+{{ if hideisk: }}
+<a href="?hideisk=no">Show ISK prizes </a>
+{{ else: }}
+<a href="?hideisk=yes">Hide ISK prizes </a>
+{{ pass }}
+
+<table>
+  <tr>
+    <th> Player </th>
+    <th> Station </th>
+    <th> Prize Won </th>
+    <th> Date </th>
+    <th> Delivery Date </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.char.charname}} </td>
+    <td>
+      <a href="{{=URL('stations','view_reel', args=[row.prize.reel])}}">{{=row.prize.reel.name}}</a>
+    </td>
+    <td> {{=row.prize.name}} </td>
+    <td> {{=row.date}} </td>
+    <td>
+      {{if row.givendate:}}
+      {{=row.givendate}}
+      {{else:}}
+      Not yet delivered!
+      {{pass}}
+    </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

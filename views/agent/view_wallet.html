@@ -1,0 +1,53 @@
+{{response.title = "Ship Spinning Inc. Wallet - Page "+str(page)}}
+{{extend "layout.html"}}
+{{include "agent_tools.html"}}
+
+{{agent_menu()}}
+
+<script type="text/javascript">
+  var pull_ajax_url = "{{=URL('char','do_wallet_pull')}}";
+</script>
+
+<script type="text/javascript"
+	src="{{=URL('static', 'js/force_pull.js')}}">
+</script>
+
+
+<h1>  Wallet Balance and Donations </h1>
+
+<h3>Balance: {{=iskfmt(balance)}}</h3>
+
+<h3>Last successful pull time: {{=pull_time}} </h3>
+
+<p>
+  <a href="javascript: void(0)"
+     onclick="processPull()">Force pull now</a>
+  <span id="pull_result"></span>
+</p>
+
+
+<p> Note: Some old entries may show up duplicated under the same RefID. The bug has since been fixed. </p>
+{{paginate(page, numpages)}}
+
+<table>
+  <tr>
+    <th> Donation ID </th>
+    <th> Reference ID </th>
+    <th> Player </th>
+    <th> Amount </th>
+    <th> Date </th>
+    <th> Comment </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.id}} </td>
+    <td> {{=row.refid}} </td>
+    <td> <a href="javascript: CCPEVE.showInfo(1377, {{=row.char.charid}})">{{=row.char.charname}}</a> </td>
+    <td> {{=iskfmt(row.amount)}} </td>
+    <td> {{=row.date}} </td>
+    <td> {{=row.comment}} </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

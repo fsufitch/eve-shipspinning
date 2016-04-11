@@ -1,0 +1,32 @@
+{{response.title = "Personal Ship Spinning Record"}}
+{{extend "layout.html"}}
+
+<h1> Personal Record of Ship Spins </h1>
+
+
+{{paginate(page, numpages)}}
+
+<table>
+  <tr>
+    <th> ID </th>
+    <th> Station </th>
+    <th> Date </th>
+    <th> Prize Won </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.spin.id}} </td>
+    <td>
+      <a href="{{=URL('stations','view_reel', args=[row.spin.reel])}}">{{=row.reel.name}}</a>
+    </td>
+    <td> {{=row.spin.date}} </td>
+    <td> 
+      {{if row.spin.award:}}
+      {{=row.spin.award.prize.name}}
+      {{pass}}
+      </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

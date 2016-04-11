@@ -1,0 +1,42 @@
+{{response.title = "Personal Ship Spinning Record"}}
+{{extend "layout.html"}}
+
+<h1> Personal Record of Wins </h1>
+
+
+{{paginate(page, numpages)}}
+
+<table>
+  <tr>
+    <th> Win ID </th>
+    <th> Station </th>
+    <th> Date </th>
+    <th> Prize Won </th>
+    <th> Delivery Date </th>
+    <th> Delivery Agent </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.id}} </td>
+    <td>
+      <a href="{{=URL('stations','view_reel', args=[row.prize.reel])}}">{{=row.prize.reel.name}}</a>
+    </td>
+    <td> {{=row.date}} </td>
+    <td> {{=row.prize.name}} </td>
+    <td>
+      {{if row.givendate:}}
+      {{=row.givendate}}
+      {{else:}}
+      Not yet delivered!
+      {{pass}}
+    </td>
+    <td>
+      {{if row.agent:}}
+      <a href="javascript:CCPEVE.showInfo(1377, {{=row.agent.charid}})">{{=row.agent.charname}}</a>
+      {{pass}}
+    </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

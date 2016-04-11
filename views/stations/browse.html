@@ -1,0 +1,87 @@
+{{response.title = "Browsing Spinning Stations"}}
+{{response.files.append(URL('static','js/chosen/chosen.css'))}}
+    
+{{extend "layout.html"}}
+
+<script type="text/javascript" src="{{=URL('static','js/browse.js')}}"></script>
+<script type="text/javascript" src="{{=URL('static','js/chosen/chosen.jquery.min.js')}}"></script>
+<script>
+  var attrib_values = eval('({{=XML(attrib_values_json)}})');
+  var base_url = "{{=URL()}}";
+  var query_att = "{{=query_att}}";
+  var query_val = "{{=query_val}}";
+</script>
+
+<h1> Browsing Spinning Stations </h1>
+
+<form id="browse_form">
+  <div class="browse_menu">
+    <span> Browse by: </span>
+    
+    <div class="browse_selects">
+      <select id="attrib">
+	<option value="0" disabled="true" selected="true">Select an attribute</option>
+	{{ for attrib in attribs: }}
+	<option value="{{=attrib.id}}">{{=attrib.name}}</option>
+	{{ pass }}
+      </select>
+      <select id="meta_value">
+      </select>
+      
+    </div>
+    
+    <input type="submit" name="submit" value="Go" />
+    
+    <input id="browse_all" type="button" name="all" value="Show all stations" />
+  </div>
+</form>
+
+<div style="margin-top: 1.5em">
+  {{if len(reels)==0:}}
+  <h3>There is nothing here. More stations are coming Soon&trade;. For now, please try a different search above.</h3>
+  {{pass}}
+
+  {{for reel in reels: }}
+  <div class="reellink{{if reel.disabled:}} disabled{{pass}}">
+    <div class="reellinkbg" style="background-image: url({{=URL('download',args=[reel.img])}})">
+      <div class="innerlink" reelid="{{=reel.id}}">
+      <div class="prizes">
+	{{for prize_id, prize_typeid, prize_img, prize_name, showinfo in prizes[reel.id]:}}
+          {{prize_genimg(prize_id, 64)}}
+	{{pass}}
+      </div>
+      <div style="display: table;">
+	<div style="display: table-cell; vertical-align: middle">
+	  <h3 style="display:inline">{{=reel.name}}</h3>
+	  {{if reel.disabled:}}
+	  <span class="warning"> Disabled! </span> 
+	  {{pass}}
+	  <a href="{{=URL('stations','view_reel', args=[reel.id])}}">Details</a>
+	  <br /><span class="cost">Cost per spin: {{=iskfmt(reel.spincost)}} ISK </span>
+	</div>
+      </div>
+      </div>
+    </div>
+    <div class="linkdetails" id="details_{{=reel.id}}">
+      <a href="{{=URL('spin','go', args=[reel.id])}}">
+	<div class="playnow">
+	  Spin It Now! <img src="{{=URL('static','images/undock.png')}}" />
+	</div>
+      </a>
+      <p> 
+	<b>Prize details:</b>
+	{{counter=0}}
+	{{for prize_id, prize_typeid, prize_img, prize_name, showinfo in prizes[reel.id]:}}
+	{{counter+=1; comma=',' if counter<len(prizes[reel.id]) else ''}}
+	{{if prize_typeid and showinfo:}}
+	<a href="javascript:void();" onclick="show_typeid({{=prize_typeid}})">{{=prize_name}}</a>{{=comma}}
+	{{else:}}
+	<span title="No description available">{{=prize_name}}</span>{{=comma}}
+	{{pass}}
+	{{pass}}
+      </p>
+      <div style="clear:both"> </div>
+    </div>
+  </div>
+  {{pass}}
+</div>

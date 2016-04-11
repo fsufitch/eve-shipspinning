@@ -1,0 +1,14 @@
+{{response.title = "Available Stations"}}
+{{extend "layout.html"}}
+
+<h1> Available Stations </h1>
+{{for reel in reels: }}
+<a class="reel" href="{{=URL('stations','view_reel', args=[reel.id])}}">
+  <div class="reel">
+    <img src="{{=URL('download',args=[reel.img])}}" />
+    <h3>{{=reel.name}}</h3>
+    <p>{{=XML(reel.description)}}</p>
+    <big><p> Cost per spin: {{=iskfmt(reel.spincost)}} ISK</p></big>
+  </div>
+</a>
+{{pass}}

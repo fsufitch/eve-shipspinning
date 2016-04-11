@@ -1,0 +1,88 @@
+{{response.title="Referral Program"}}
+{{extend "layout.html"}}
+
+<h1> Ship Spinning Referral Program </h1>
+
+{{if not refcode:}}
+<p> No referral code specified! </p>
+
+<p> Please use a valid referral URL to claim your referral. </p>
+{{elif not found:}}
+<p> Invalid refcode specified: "{{=refcode}}"! </p>
+
+<p> Double-check that you copied the entire URL, or that the URL is correct in the first place. </p>
+{{#START REAL REFCODE}}
+{{else:}}
+
+<div>
+  <img src="http://image.eveonline.com/Character/{{=referrer.charid}}_128.jpg" style="float:left" />
+  <big>
+    <p> <strong>{{=referrer.charname}}</strong> invites you to play Ship Spinning! </p>
+    <p>
+      Ship Spinning Inc. is a browser-based slot machine for <a href="http://eveonline.com">Eve
+	Online</a>. Use your in-game ISK to spin for prizes! For more info,
+      check out the <a href="{{=URL('general','faq')}}">FAQ</a> and our 
+      <a href="{{=URL('general','promise')}}">90% payout promise</a>. 
+    </p>
+    <p> If you join Ship Spinning Inc. using this referral code, you get a cool free <em>3,000,000 ISK</em>
+      of slot machine credit, putting you on your way to winning big.
+    </p>
+  </big>
+</div>
+<hr />
+{{if not igb:}}
+<p><big><strong>Referral status:</strong> not yet claimed.</big></p>
+<p> In order to claim your referral code, you <em>must</em> use the Eve in-game browser. </p>
+
+<p> This requirement is in place to verify your identity. </p>
+{{elif not trusted:}}
+<p><big><strong>Referral status:</strong> not yet claimed.</big></p>
+<p> You are using the in-game browser, but have not granted trust. Please use
+  <a href="javascript: CCPEVE.requestTrust('http://shipspinning.com/');">this link</a>
+  to do so, then refresh the page.</p>
+
+<p> In-game browser trust is required to verify your identity when claiming a referral code. </p>
+
+{{#START REAL IGB REQUEST}}
+{{else:}}
+
+<!-- igb auth successful -->
+{{if selfreferral:}}
+<p><big><strong>Referral status:</strong> Not eligible!</big></p>
+
+<p>You can't refer yourself!</p>
+
+{{elif already_referred:}}
+<p><big><strong>Referral status:</strong> Not eligible!</big></p>
+
+<p>You have already used a referral code from <strong>{{=already_referred_referrer.charname}}</strong>!</p>
+
+{{elif not newplayer:}}
+<p><big><strong>Referral status:</strong> Not eligible!</big></p>
+
+<p>You are already a Ship Spinning Inc. player! Referral codes are for new players only.</p>
+<p>You can still get bonus credit by sharing your own referral link with new players. It can be
+  found on your <a href="{{=URL('char','me')}}">character overview page</a>.</p>
+{{elif referrer_new:}}
+<p><big><strong>Referral status:</strong> Referrer not eligible!</big></p>
+
+<p>The referrer is still a new player him/herself!</p>
+<p>Referrers must be active players with a base number of ISK donated to activate referral codes.</p>
+{{else:}}
+{{#CODE USED FOR REAL, WHEW}}
+<p><big><strong>Referral status:</strong> Claimed!</big></p>
+
+<p> Congratulations and welcome to Ship Spinning Inc.! </p>
+
+<p> Next step: take a look at our <a href="{{=URL('stations','browse')}}">ship spinning stations</a>.
+  There's something for everyone. To take maximum advantage of your starting ISK, make sure you check out
+  the less expensive stations, which let you quickly get a lot more credit.
+</p>
+
+{{pass}}
+
+{{#END REAL IGB REQUEST}}
+{{pass}}
+
+{{#END REAL REFCODE}}
+{{pass}} 

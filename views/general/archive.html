@@ -1,0 +1,16 @@
+{{response.title = "Ship Spinning News Archive"}}
+{{extend "layout.html"}}
+
+<h1> News Archive </h1>
+
+<div class="archive">
+<hr />
+{{for post in posts:}}
+<div class="post">
+  <p> <big> <a href="{{=URL('news', args=[post.id])}}">{{=post.title}}</a> </big> </p>
+  <p> <small> {{=post.author.charname}} - {{=post.date}} </small> </p>
+</div>
+<hr />
+{{pass}}
+</div>
+    

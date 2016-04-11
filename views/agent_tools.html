@@ -1,0 +1,10 @@
+{{def agent_menu():}}
+<div class="agent_menu">
+  Agent actions:
+  <a href="{{=URL('agent','give_prizes')}}">Give prizes</a> |
+  <a href="{{=URL('agent','charlist')}}">View Players</a> |
+  <a href="{{=URL('agent','view_wallet')}}">View Wallet</a> |
+  <a href="{{=URL('credit','manage_codes')}}">Credit Codes</a> |
+  <a href="{{=URL('credit','claims')}}">View Code Claims</a>
+</div>
+{{return}}

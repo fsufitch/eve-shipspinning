@@ -1,0 +1,11 @@
+{{response.title = "Ship Spinning Statistics"}}
+{{extend "layout.html"}}
+
+<h1> Ship Spinning Inc. Statistics </h1>
+
+<ul>
+  <li> Total ISK won: {{=iskfmt(total_prize_isk)}} ISK </li>
+  <li> Number of players: {{=num_players}} </li>
+  <li> Prizes to win: {{=num_real_prizes}} </li>
+  <li> Total free credit from credit codes: {{=iskfmt(total_credit_codes)}} ISK </li>
+</ul>

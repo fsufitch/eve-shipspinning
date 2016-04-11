@@ -1,0 +1,14 @@
+h1 { padding: 10px }
+
+.leftpane {
+    max-width: 15em;
+    float: left;
+    padding: 1em;
+    border-right: thin solid #CCC;
+}
+.rightpane {
+    float: left;
+    display: block;
+    margin: 1em;
+    overflow: auto;
+}

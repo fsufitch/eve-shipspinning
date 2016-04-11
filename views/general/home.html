@@ -1,0 +1,87 @@
+{{response.title = "Ship Spinning Inc."}}
+{{extend "layout.html"}}
+
+<a href="{{=URL('default', 'index')}}"><h1>
+<img src="{{=URL('static','images/logo.png')}}" alt="Ship Spinning
+						     Inc. [SLOTS]"/>
+</h1></a>
+
+<hr />
+<h2> What is this? </h2>
+<p> <big> 
+    Ship Spinning Inc. is a browser-based slot machine for <a href="http://eveonline.com">Eve
+    Online</a>. Use your in-game ISK to spin for prizes! For more info,
+    check out the <a href="{{=URL('general','faq')}}">FAQ</a> and our 
+    <a href="{{=URL('general','promise')}}">90% payout promise</a>. 
+</big> </p>
+<hr />
+
+<div class="homescreen">
+  <div class="news panel left">
+    <p style="float: right"> 
+      <a href="{{=URL('general','archive')}}">Go to news archive</a>
+    </p>
+    <a href="{{=URL('general','news')}}"><h2> News </h2></a>
+    <hr />
+    <h3> {{=XML(newspost.title)}}</h3>
+    <p><i> by {{=newspost.author.charname}} at {{=newspost.date}}</i> </p>
+    <div>
+          {{=XML(newspost.body)}}
+    </div>
+  </div>
+
+  
+  <div class="stats panel right">
+    <h2> Over {{=iskfmt(prizeisk)}} ISK winnings</h2>
+    <h2> {{=numplayers}} players </h2>
+    <h2> {{=numships}} different prizes to win </h2>
+  </div>
+
+  <a href="{{=URL('stations','browse')}}">
+    <div class="spinnow panel right">
+      Spin to Win Now!
+    </div>
+  </a>
+
+  <div class="popular panel right">
+    <h2> Popular Now </h2>
+    <hr />
+    <a href="{{=URL('spin','go',args=[popular.id])}}">
+    <div class="popularlink">
+      <big>{{=popular.name}}</big>
+      <br />
+      {{for prize in prizes:}}
+
+	{{prize_genimg(prize.id, 64)}}
+      {{pass}}
+	<br />
+      {{=iskfmt(popular.spincost)}} ISK per spin
+    </div>
+    </a>
+  </div>
+
+  <div class="winners panel right">
+    <h2> Recent Winners </h2>
+    <hr />
+    <table>
+      <tr>
+	<th>Player</th>
+	<th>Prize</th>
+      </tr>
+      {{for winner in winners:}}
+      <tr>
+	<td>
+	  <img src="http://image.eveonline.com/Character/{{=winner.char.charid}}_32.jpg" />
+	  {{=winner.char.charname}}
+	</td>
+	<td>
+	  <img src="{{=prize_imgurl(winner.prize.id, 32)}}" style="height:32px; width:32px;"/>
+	  {{=winner.prize.name}} 
+	</td>
+      </tr>
+      {{pass}}
+    </table>
+  </div>
+  
+</div>
+

@@ -1,0 +1,80 @@
+{{response.title = "Balancing Reel"}}
+{{extend "layout.html"}}
+
+{{if reellist: }}
+<h1> Pick a Reel to Balance: </h1>
+<ul>
+  {{for reel in reels: }}
+  <li>
+  <a href="{{=URL('stations','balance_reel', args=[reel.id])}}">
+    {{=reel.name}}
+  </a>
+  <b>
+    {{="Disabled!" if reel.disabled else ""}}
+    {{="Price broken!" if reel.pricebroken else ""}}
+  </b>
+  </li>
+  {{pass}}
+</ul>
+
+{{else:}}
+
+<h1> Balancing Reel: {{=reel.name}} </h1>
+
+<p> <a href="{{=URL('stations','balance_reel')}}">Back to list</a> </p>
+
+
+<p> <b> Current Theoretical Payout: </b> {{=theoretical}} </p>
+<p> <b> Current Empirical Payout: </b>
+  <span id="empirical"></span>
+  <img id="throbber" src="{{=URL('static','images/throbber.gif')}}" style="display:none" />
+  <span id="refresh" style="cursor:pointer;color:yellow">Refresh</span>
+</p>
+
+{{if reel.disabled:}}
+<p> This reel is currently disabled. <a href="?enable=yes">Enable?</a></p>
+{{else:}}
+<p> This reel is currently enabled. <a href="?disable=yes">Disable?</a></p>
+{{pass}}
+
+{{if reel.pricebroken:}}
+<p> This reel's price is currently broken. <a href="?unbreak=yes">Override?</a> (broken flag may return if not fixed)</p> 
+{{else:}}
+<p> This reel's price is balanced :) </p>
+{{pass}}
+
+<h2> Current Prizes </h2>
+ 
+<form method="post">
+<ul>
+{{for prize in prizes:}}
+<li>
+
+  <input type="text" name="prize_{{=prize.id}}" value="{{=prize.repeat}}"
+         style="width: 3em" />x
+
+  {{prize_genimg(prize.id, 64)}}
+{{pass}}
+</ul>
+<input type="Submit" name="submit" value="Submit" />
+</form>
+
+<script>
+  function refresh_complete(data, status) {
+    $("#empirical").html(data);
+    $("#throbber").hide();
+    $("#refresh").show();
+  }
+
+  function page_init() {
+    $("#refresh").click(function() {
+      $("#throbber").show();
+      $("#refresh").hide();
+      $.ajax("{{=URL('stations','balance_reel', args=[reel.id], vars={'rpc':'true', 'empirical':'1'})}}",
+             dataType="json").success(refresh_complete).error(function(){alert("Error!");});
+             
+    });
+  }
+  $(document).ready(page_init);
+</script>
+{{pass}}

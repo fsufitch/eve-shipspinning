@@ -1,0 +1,43 @@
+{{response.title = "Editing Reel Metadata"}}
+{{extend "layout.html"}}
+
+{{if reellist: }}
+<h1> Pick a reel to change metadata of: </h1>
+<ul>
+  {{for reel in reels: }}
+  <li>
+  <a href="{{=URL('stations','meta_reel', args=[reel.id])}}">
+    {{=reel.name}}
+  </a>
+  </li>
+  {{pass}}
+</ul>
+
+{{else:}}
+
+
+<h1> Editing Metadata of Reel: {{=reel.name}} </h1>
+
+<p><a href="{{=URL('stations','meta_reel')}}">Back to list</a></p>
+
+<form method="post">
+{{for attrib in attribs: }}
+
+<p> <b>{{=attrib.name}}</b> </p>
+
+<select name="s_{{=attrib.id}}">
+  <option value="0">N/A</option>
+  {{for (val_id, val_name) in attrib_values[attrib.id]:}}
+  {{if attrib_selected[attrib.id]==val_id:}}
+  <option value="{{=val_id}}" selected="true">{{=val_name}}</option>
+  {{else:}}
+  <option value="{{=val_id}}">{{=val_name}}</option>
+  {{pass}}
+  {{pass}}
+</select>
+{{pass}}
+<br />
+<input type="submit" name="submit" value="Submit" />
+</form>
+
+{{pass}}

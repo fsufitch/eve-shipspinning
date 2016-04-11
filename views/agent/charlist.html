@@ -1,0 +1,30 @@
+{{response.title = "Management - Player List"}}
+{{extend "layout.html"}}
+{{include "agent_tools.html"}}
+
+{{agent_menu()}}
+
+<h1> Player List </h1>
+
+<p> Please do not refresh this too often.
+  It is a large database query, and can lag the server. </p>
+
+<table>
+  <tr>
+    <th> Database ID </th>
+    <th> Character ID </th>
+    <th> Name </th>
+    <th> Credit (ISK) </th>
+    <th> Agent </th>
+  </tr>
+  
+  {{for char in chars:}}
+  <tr>
+    <td> {{=char.id}} </td>
+    <td> {{=char.charid}} </td>
+    <td> <a href="javascript: CCPEVE.showInfo(1377,{{=char.charid}})">{{=char.charname}}</a> </td>
+    <td style="text-align: right"> {{=iskfmt(char.isk)}} </td>
+    <td> {{="Agent" if char.agent else ""}}
+  </tr>
+  {{pass}}
+</table>

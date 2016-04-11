@@ -1,0 +1,50 @@
+{{response.title="Prize Buyout for Credit"}}
+{{extend "layout.html"}}
+
+<h1>Prize Buyout for Credit</h1>
+
+<script type="text/javascript">
+var price_ajax_url = "{{=URL('buyout','get_price')}}";
+var buyout_ajax_url = "{{=URL('buyout','buyout_credit')}}";
+</script>
+
+<script type="text/javascript" src="{{=URL('static','js/buyout_credit.js')}}"></script>
+
+{{if len(awards):}}
+<table>
+  <tr>
+    <th>Prize</th>
+    <th>Date Won</th>
+    <th>Buyout</th>
+  </tr>
+
+  {{for award in awards:}}
+  <tr>
+    <td><a href="javascript: CCPEVE.showInfo({{=award.prize.typeid}})">
+	{{=award.prize.name}}
+    </a></td>
+    <td>{{=award.date}}</td>
+    <td>
+      <a id="get_price_{{=award.id}}" href="javascript: void(0)"
+	 onclick="get_price({{=award.id}})">Get Price</a>
+      <span id="confirm_{{=award.id}}" style="display: none">
+	<span id="price_{{=award.id}}"></span>
+	<a href="javascript: void(0)" onclick="buyout({{=award.id}})">Buyout for this price</a>
+      </span>
+    </td>
+  </tr>
+  {{pass}}
+</table>
+{{else:}}
+<p> You do not currently have any items eligible for buyout! </p>
+{{pass}}
+
+
+<p> <strong>Note:</strong> Buyout prices are based on the buy prices of items in The Forge
+  as fetched using the <a href="http://eve-central.com">EVE-Central</a> API. Any weird
+  prices are because the market monkeys in Jita aren't doing a good enough job. Go suicide
+  gank them.
+</p>
+
+<p> On the other hand, if there is a legitimate problem with the prices, Eve-mail or otherwise
+  contact <a href="javascript: CCPEVE.showInfo(1377, 90602792)">Viddyi Dukima</a>. </p>

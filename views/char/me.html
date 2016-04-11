@@ -1,0 +1,132 @@
+{{response.title="About me"}}
+{{extend "layout.html"}}
+<script type="text/javascript" src="{{=URL('static','js/referral.js')}}"></script>
+
+<div class="spinmenu_cont">
+  <div class="spinmenu">
+    <ul>
+      <li>
+	<a href="{{=URL('buyout','index')}}">
+	  <img src="{{=URL('static','images/isk.png')}}" />
+	  Prize Cash-in
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','wins')}}">
+	  <img src="{{=URL('static','images/delivery.png')}}"/>
+	  Wins and Deliveries
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','spins')}}">
+	  <img src="{{=URL('static','images/stats.png')}}"/>
+	  Spin Log
+	</a>
+      </li>
+      <li>
+	<a href="{{=URL('char','isk_receipts')}}">
+	  <img src="{{=URL('static','images/receipt.png')}}"/>
+	  Donation Receipts
+	</a>
+      </li>
+    </ul>
+  </div>
+  <div style="clear: both"> </div>
+</div>
+
+
+<img src="http://image.eveonline.com/Character/{{=charid}}_256.jpg" style="float:left; margin: 1em" />
+
+<h2> Welcome, {{=charname}}! </h2>
+<h3>Current balance: {{=isk}}
+  {{if char.bonus_mult:}}
+  <small><em>+{{=char.bonus_mult}}% per donation</em></small>
+  {{pass}}
+</h3>
+
+<p>
+<!--
+{{if igb_login:}}
+You are currently logged in via the in-game browser.
+{{else:}}
+You are currently logged in via out-of-game authentication.
+{{pass}}
+-->
+{{if not has_password: }}
+ <a href="{{=URL('password')}}">Set out-of-game access password</a>.
+</p>
+{{else:}}
+<p> <!--You have an out-of-game browser password set. -->
+  <a href="{{=URL('password')}}">Change out-of-game access password</a>.
+  Eve-mail <a href="javascript: CCPEVE.showInfo(1377, 90602792)">Viddyi Dukima</a> in case of a lost password.
+</p>
+{{pass}}
+
+<form method="post" action="{{=URL('credit', 'my_codes')}}">
+  <h3> Have a credit code to redeem? </h3>
+    <big>
+      <input type="text" name="code" /> <input type="submit" name="submit_form" value="Go!" />
+    </big>
+  </p>
+</form>
+
+<h3> Referral URL: </h3>
+{{refurl=DOMAIN_URL + URL('char','referral',args=refcode)}}
+<p> <big> <a href="{{=refurl}}">{{=refurl}}</a> </big></p>
+<p id="referral_explanation"> 
+  <a href="javascript:void(0)">What is this?</a> 
+  <span style="visibility:hidden">Anyone who signs up with this referral link receives
+    3,000,000 ISK of free starting credit. If they stay (and donate more than 1 mil ISK),
+    you receive lots of goodies!
+  </span>
+</p>
+
+<p><big> 
+    <b>Unclaimed referrals:</b> 
+    {{if unclaimed_refs>0:}}
+    {{=unclaimed_refs}} <a id="claimrefs" href="javascript:void(0)">Claim!</a> 
+    {{else:}}
+    0
+    {{pass}}
+  </big>
+</p>
+<p>
+  You receive 1 million ISK of credit per referral, plus additional tiered prizes as below.
+</p>
+<p><big> <b>Claimed referrals:</b> {{=claimed_refs}} </big></p>
+
+<ul id="referral_bonuses">
+{{for k in REF_PRIZE_TIERS:}}
+{{prize_type = 0 if k in ref_bonus_prizes[0] else 1 if k in ref_bonus_prizes[1] else 2 if k in ref_bonus_prizes[2] else -1}}
+  <li id="bonus_{{=k}}"
+      {{if prize_type==0:}}
+      class="claimed"
+      {{elif prize_type==1:}}
+      class="claimable"
+      {{else:}}
+      class="unclaimable"
+      {{pass}}> 
+    <b>{{=REF_PRIZE_TIERS[k]["numrefs"]}} referrals</b> &mdash;
+    {{if REF_PRIZE_TIERS[k]["isk"]:}}
+    {{=iskfmt(REF_PRIZE_TIERS[k]["isk"])}} ISK in credit. 
+    {{pass}}
+    {{if REF_PRIZE_TIERS[k]["bonus"]:}}
+    Permanent {{=REF_PRIZE_TIERS[k]["bonus"]*100}}% bonus to all your ISK donations. 
+    {{pass}}
+    {{if REF_PRIZE_TIERS[k]["extra"]:}}
+    {{=REF_PRIZE_TIERS[k]["extra"]}}
+    {{pass}}
+    {{if prize_type==0:}}
+    <b href="javascript:void(0)">Claimed!</b>
+    {{pass}}
+    {{if prize_type==1:}}
+    <a prize="{{=k}}" class="claim" href="javascript:void(0)">Claim this!</a>
+    {{pass}}
+    {{if prize_type==2:}}
+    <s>Not enough referrals.</s>
+    {{pass}}
+  </li>
+  {{pass}}
+</ul>
+
+

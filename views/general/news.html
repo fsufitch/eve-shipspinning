@@ -1,0 +1,58 @@
+{{if homeview:}}
+{{response.title = "Ship Spinning Inc."}}
+{{else:}}
+{{response.title = post.title}}
+{{pass}}
+{{extend "layout.html"}}
+
+{{if homeview:}}
+<div class="welcome">
+<h2> Welcome! </h2>
+<p>
+  <a href="javascript:CCPEVE.showInfo(2, 98055909);">Ship Spinning
+  Inc.</a> is a browser-based slot machine game for <a href="http://eveonline.com">Eve Online</a>. If
+  you would like to know more about what it is and how it works,
+  <a href="{{=URL('general','faq')}}">check out the
+  FAQ</a>. Otherwise, go see
+  what <a href="{{=URL('stations','browse')}}">stations</a> are available.
+  Have fun!
+</p>
+</div>
+
+<h2> Recent News </h2>
+{{pass}}
+
+<a href="{{=URL('archive')}}">Browse news archive</a>
+
+{{if char and char.agent:}}
+| <a href="{{=URL('new_post')}}">New post</a>
+{{if post:}}
+| <a href="{{=URL('edit_post', args=[post.id])}}">Edit this post</a>
+{{pass}}
+{{pass}}
+
+{{if post:}}
+
+<div class="post">
+  <div class="body">
+    <h1> <a href="{{=URL(args=[post.id])}}">{{=XML(post.title)}}</a> </h1>
+    {{=XML(post.body)}}
+  </div>
+  <div class="author">
+    <img src="http://image.eveonline.com/Character/{{=post.author.charid}}_64.jpg" />
+    <p>Posted by {{=post.author.charname}} at {{=post.date}}.
+    {{if post.editdate:}}</p>
+    <p> <small> Edited by {{=post.editauthor.charname}} at
+    {{=post.editdate}}. </small></p>
+    {{pass}}
+    <div style="clear:both"><em>Discuss the news in the
+	<a href="javascript: CCPEVE.joinChannel('Ship Spinning')">Ship
+	  Spinning</a> channel in-game! Nobody there? Check in with
+	the <a href="https://forums.eveonline.com/default.aspx?g=posts&t=21967">[SLOTS]
+	  thread</a> in the Sell Order forums!</em>
+    </div>
+  </div>
+</div>
+
+
+{{pass}}

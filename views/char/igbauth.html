@@ -1,0 +1,42 @@
+{{response.title = "In-Game Browser Trust Requested"}}
+{{extend "layout.html" }}
+
+{{if igb:}}
+
+{{if trusted:}}
+<h2> In-Game Browser Trust Confirmed </h2>
+
+<p> Thank you for trusting Ship Spinning! Enjoy, and good luck! </p>
+
+{{else:}}
+
+<h2> In-Game Browser Trust Required </h2>
+
+<p> 
+  Ship Spinning Slots uses the Eve API to authenticate you while
+  using the in-game browser. For it to do this, though, you need to
+  grant trust to this page. Use the button below to do so.
+</p>
+
+<p>
+
+  <i> For your peace of mind: </i> None of the information accessed via granting trust to
+  {{=trust_url}} will be used for any purpose other than the proper
+  functioning of this service. No information will be given to any 3rd
+  party, either.
+
+</p>
+<p> <a href="javascript:CCPEVE.requestTrust('{{=trust_url}}'); $('#refreshmsg').show()">Click here to
+ grant trust to {{=trust_url}}. </a></p>
+
+<p id="refreshmsg" style="display: none;"> Refresh this page to confirm the process. </p>
+
+
+{{pass}}
+
+{{else:}}
+<h2> In-Game Browser Required </h2>
+
+  Ship Spinning requires being in game, fool! What's wrong with you? <a href="javascript:history.back(1);">Back</a>
+<p>
+{{pass}}

@@ -1,0 +1,28 @@
+{{response.title = "Personal Ship Spinning Record"}}
+{{extend "layout.html"}}
+
+<h1> ISK Income Receipts for {{=get_name_from_id(session.charid)}} </h1>
+
+
+{{paginate(page, numpages)}}
+
+<table>
+  <tr>
+    <th> Receipt ID </th>
+    <th> Donation RefID </th>
+    <th> Amount (ISK) </th>
+    <th> Date </th>
+    <th> Comment </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.id}} </td>
+    <td> {{=row.refid}} </td>
+    <td> {{=row.amount}} </td>
+    <td> {{=row.date}} </td>
+    <td> {{=row.comment}} </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

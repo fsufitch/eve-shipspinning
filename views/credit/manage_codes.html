@@ -1,0 +1,60 @@
+{{response.title = "Managing Credit Codes"}}
+{{extend "layout.html"}}
+{{include "agent_tools.html"}}
+
+{{agent_menu()}}
+
+<script type="text/javascript">
+  function process_data(data) {
+    var outcome = eval('('+ data + ')');
+    var id = outcome['id'];
+    var status = outcome['status'];
+    if (status) {
+      $("#toggle_"+id).html("Active");
+    }
+    else {
+      $("#toggle_"+id).html("Inactive");
+    }
+  }
+
+  function toggle_active(id) {
+    $("#toggle_"+id).html("");
+    $.ajax({url: "{{=URL('credit','toggle_active')}}?id="+id,
+     	    success: process_data,
+     	    error: function(){alert("There was an error: "+data);}
+     	   });
+
+}  
+ 
+</script>
+
+<h1> Managing Credit Codes </h1>
+
+<h2>Current credit codes:</h2>
+
+<table>
+  <tr>
+    <th> ID </th>
+    <th> Name (not public) </th>
+    <th> Code </th>
+    <th> ISK </th>
+    <th> Active </th>
+  </tr>
+  {{ for row in rows: }}
+  <tr>
+    <td>{{=row.id}}</td>
+    <td>{{=row.name}}</td>
+    <td>{{=row.code}}</td>
+    <td>{{=iskfmt(row.isk)}}</td>
+    <td>
+      <a href="javascript: void(0)" onclick="toggle_active({{=row.id}})" id="toggle_{{=row.id}}">
+	{{="Active" if row.active else "Inactive"}}
+      </a>
+    </td>
+  </tr>
+  {{pass}}
+</table>
+
+<h2> Add new credit code: </h2>
+
+{{=form}}

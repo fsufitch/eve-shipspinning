@@ -1,0 +1,64 @@
+{{response.title = "Editing Reel"}}
+{{extend "layout.html"}}
+
+{{if reellist: }}
+<h1> Pick a reel to edit: </h1>
+<ul>
+  {{for reel in reels: }}
+  <li>
+  <a href="{{=URL('stations','edit_reel', args=[reel.id])}}">
+    {{=reel.name}}
+  </a>
+  </li>
+  {{pass}}
+</ul>
+
+{{else:}}
+
+
+<h1> Editing Reel: {{=reel.name}} </h1>
+
+<a href="{{=URL('stations','edit_reel')}}">Back to list</a>
+
+{{=form}}
+
+<h2> Add a new prize </h2>
+
+{{=prizeform}}
+
+<h2> Current Prizes </h2>
+ 
+<ul>
+{{for prize in prizes:}}
+<li> {{=prize.repeat}}
+
+  <img src="{{=prize_imgurl(prize.id,128)}}" />
+  
+  {{ if prize.typeid: }}
+     {{=A(prize.name, _href="CCPEVE:showInfo("+prize.typeid+")")}}
+  {{ else: }}
+  {{=prize.name}}
+  {{ pass }}
+
+  {{ if (prize.typeid) and (prize.iskprize>0.01): }} 
+  + 
+  {{pass}}
+
+  {{ if prize.iskprize>0.01: }}
+  {{=iskfmt(prize.iskprize)}} ISK
+  {{pass}}
+
+  <a href="{{=URL(args=[reel.id], vars={'remove':prize.id})}}">Remove</a>
+  <br /> Interpreted pack:
+  {{pack = extract_pack(prize.id)}}
+  {{if pack:}}
+  {{for typeid in pack:}}
+    <br /> <img src="{{=pack[typeid][PACKIMG]}}" /> 
+    {{=pack[typeid][PACKCOUNT]}}x 
+    {{=pack[typeid][TYPENAME]}} 
+  {{pass}}
+  {{pass}}
+   </li>
+{{pass}}
+</ul>
+{{pass}}

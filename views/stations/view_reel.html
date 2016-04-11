@@ -1,0 +1,129 @@
+{{response.title = reel.name}}
+{{extend "layout.html"}}
+
+
+<h1>{{=reel.name}}</h1>
+
+<center><h2>
+  <a href="{{=URL('spin','go', args=[reel.id])}}">
+    <div class="spinnow">
+      {{if not reel.disabled:}}
+      Spin to Win Now!
+      {{else:}}
+      <s>Spin to Win Now!</s>
+      {{pass}}
+    </div>
+  </a>
+</h2></center>
+{{if reel.disabled:}}
+<center><p class="warning">This station is currently disabled. See why below.</p></center>
+{{pass}}
+
+<div style="clear: both; height: 20px;"></div>
+
+<div class="vertprizes">
+<h3>Prizes:</h3>
+{{for prize in prizes:}}
+
+  {{prize_genimg(prize.id, 128)}}
+
+{{pass}}
+</div>
+
+<div id="payout_gauge"></div>
+
+<div class="details">
+<h3>Cost per spin: {{=iskfmt(reel.spincost)}} ISK</h3>
+
+<p> {{=XML(reel.description)}} </p>
+
+<hr />
+
+<h3 {{if reel.pricebroken:}}class="warning"{{pass}}> Current payout rate: {{=payout}}% </h3>
+
+{{p=URL('general','promise')}}
+
+<p>
+{{if not reel.pricebroken and not reel.disabled:}}
+This payout rate is within Ship Spinning Inc.'s <a href="{{=p}}">promise</a> of a 90%&plusmn;5% payout. 
+<a href="{{=URL('spin','go', args=[reel.id])}}">Take it for a spin!</a>
+{{elif reel.pricebroken and reel.disabled:}}
+<span class="warning">
+  This payout rate is outside Ship Spinning Inc.'s <a href="{{=p}}">promise</a> of a 90&plusmn;5% payout,
+  and the station is disabled pending a review of its win chances. Hang tight, or ping
+  <a href="javascript: CCPEVE.showInfo(1377, 90602792)">the administrator</a> to fix it.
+</span>
+{{elif not reel.pricebroken and reel.disabled:}}
+<span class="warning">
+  While the payout rate is within Ship Spinning Inc.'s <a href="{{=p}}">promise</a> of a 90&plusmn;5% payout,
+  the station has been manually disabled for other reasons. Hang tight, or ping
+  <a href="javascript: CCPEVE.showInfo(1377, 90602792)">the administrator</a> for more info.
+</span>
+{{else:}}
+<span class="warning">
+  This payout rate is not within Ship Spinning Inc.'s <a href="{{=p}}">promise</a> of a 90&plusmn;5% payout,
+  but the station has not been automatically disabled. Something's wrong. Please inform
+  <a href="javascript: CCPEVE.showInfo(1377, 90602792)">the administrator</a>.
+</span>
+{{pass}}
+</p>
+
+<p>
+<script type="text/javascript">
+function payoutexplain() {
+$('#payoutquestion').hide();
+$('#payoutexplain').slideDown();
+}
+</script>
+<a href="javascript:void(0);"
+   onclick="payoutexplain()"
+   id="payoutquestion">What does this all mean?</a>
+<div id="payoutexplain" style="display:none">
+  The payout ratio is the amount that you would theoretically "win back" if you played an
+  infinite number of spins. Another way to interpret it is to simply multiply the spin cost by
+  the ratio. In this case, that results in {{=iskfmt(reel.spincost*payoutnum)}} ISK, which is
+  the amount that you statistically win "on average" for every spin.
+  </div>
+</p>
+
+</div>
+
+
+<script>
+google.load('visualization', '1', {packages:['gauge']});
+
+function drawVisualization() {
+  // Create and populate the data table.
+
+  var data = google.visualization.arrayToDataTable([
+    ['Label', 'Value'],
+    ['Payout %', {{=payout}}],
+    ]);
+
+  var options = {
+    width: 200, height: 200,
+    min: 0, max: 100,
+    redFrom: 0, redTo: 85,
+    greenFrom: 85, greenTo: 95,
+    yellowFrom:95, yellowTo: 100,
+    minorTicks: 20, majorTicks: [0, 20, 40, 60, 80, 100]
+    
+  };
+  
+  // Create and draw the visualization.
+  new google.visualization.Gauge(document.getElementById('payout_gauge')).
+      draw(data, options);
+}
+
+function darkGauge(gauge) {
+  var gauge = $(gauge);
+  gauge.find("text").attr("fill", "#fff");
+  gauge.find("circle[fill='#cccccc']").attr("fill", "#111");
+  gauge.find("circle[fill='#f7f7f7']").attr("fill", "#000");
+}
+
+$(document).ready(function() {
+  drawVisualization();
+  darkGauge($("#payout_gauge"));
+});
+</script>

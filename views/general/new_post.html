@@ -1,0 +1,12 @@
+{{response.title="Posting new news post"}}
+{{extend "layout.html"}}
+
+<h1> Posting new news post </h1>
+
+<form method="post">
+  <p>Title: <input type="text" name="title" /></p>
+  <p>Body (HTML-formatted): </p>
+  <textarea name="body" style="width: 90%; height: 20em"></textarea>
+  <input type="submit" name="form_submit" value="Submit" />
+</form>
+  

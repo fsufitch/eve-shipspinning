@@ -1,0 +1,35 @@
+{{response.title = "Credit Code Claims"}}
+{{extend "layout.html"}}
+{{include "agent_tools.html"}}
+
+{{agent_menu()}}
+
+<h1> Credit Code Claims </h1>
+
+
+{{paginate(page, numpages)}}
+
+<table>
+  <tr>
+    <th> Claim ID </th>
+    <th> Character </th>
+    <th> Name </th>
+    <th> Code </th>
+    <th> ISK </th>
+    <th> Date </th>
+  </tr>
+  {{for row in rows:}}
+  <tr>
+    <td> {{=row.id}} </td>
+    <td>
+      <a href="javascript:CCPEVE.showInfo(1377, {{=row.char.charid}})">{{=row.char.charname}}</a>
+    </td>
+    <td> {{=row.credit_code.name}} </td>
+    <td> {{=row.credit_code.code}} </td>
+    <td> {{=iskfmt(row.credit_code.isk)}} </td>
+    <td> {{=row.date}} </td>
+  </tr>
+  {{pass}}
+</table>
+
+{{paginate(page, numpages)}}

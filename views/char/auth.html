@@ -1,0 +1,33 @@
+{{response.title = "Login"}}
+{{extend "layout.html"}}
+
+{{if loginfail:}}
+<div class="error">
+  Character name and password do not match any records for out-of-game authentication.
+</div>
+{{pass}}
+
+<h2> Login </h2>
+
+
+{{ if not igb: }}
+<p> To activate a Ship Spinning Inc. [SLOTS] account, you need to first log in via the
+  Eve in-game browser. You will then be able to set a password (not your Eve one) to log in
+  using any browser.</p>
+{{ else: }}
+{{ if not trusted: }}
+<p> You are using the in-game browser, but have not granted trust. Use
+  <a href="javascript: CCPEVE.requestTrust('http://shipspinning.com/');">this link</a>
+  to do so, then refresh the page.
+</p>
+{{ pass }}
+{{ pass }}
+
+
+<form method="POST" action="{{=URL('auth')}}">
+<p> Your Character Name: <input type="text" name="charname" /> (case sensitive) </p>
+<p> Your [SLOTS] Password: <input type="password" name="password" /> </p>
+<input type="hidden" name="next" value="{{=nexturl}}" />
+<p> <input type="submit" name="submit_form" value="Submit" /> </p>
+</form>
+
